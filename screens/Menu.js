@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Button, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity, Image, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { List, ListItem, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import * as firebase from 'firebase';
@@ -24,10 +24,12 @@ export default class Menu extends Component {
         this.state = {
             baseList: [],
             isLoading: true,
+            refreshing: false,
+            iconFlag: false,
         }
     }
-    componentWillMount() {
-        console.log('componentWillMount');
+    componentDidMount() {
+        console.log('componentDidMount');
         this.FirebaseInit();
         
     }
@@ -38,7 +40,7 @@ export default class Menu extends Component {
         var database = firebase.database();
         database.ref('/Menu/').once('value').then(function (snapshot) {
             let Arr = self.toArrayFromObj( snapshot.val() );         
-            self.setState({ baseList: Arr,isLoading: false })
+            self.setState({ baseList: Arr,isLoading: false,refreshing: false })
         });
     }
 
@@ -50,17 +52,28 @@ export default class Menu extends Component {
         }
         return arr;
     }
+    _onRefresh() {
+        this.setState({ refreshing: true });
+        this.FirebaseInit();
+    }
 
     render() {
         if (this.state.isLoading == true) {
             content = (
                 <View style={{justifyContent: 'center',alignItems: 'center',}}>
-                    <ActivityIndicator size="large" color="#7DB03B" animating={this.state.isLoading}/>
+                    <ActivityIndicator size="large" color="black" animating={this.state.isLoading}/>
                 </View>
             )
         } else {
             content=(
-                <ScrollView pagingEnabled>
+                <ScrollView pagingEnabled
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                    }
+                >
                     <List containerStyle={{ marginTop: 0 }}>
                         {
                             this.state.baseList.map((l, i) => (
@@ -82,9 +95,17 @@ export default class Menu extends Component {
                                     rightIcon={
                                         <View style={{flexDirection: 'row',justifyContent: 'center'}}>
                                             <TouchableOpacity
-                                                onPress={() => console.log(this.props.nav && this.props.navigation) }
+                                                onPress={
+                                                    () => {this.props.navigation ? this.props.navigation.navigate('Main') : this.props.nav.navigate('Main')
+                                                        this.setState({iconFlag: !this.state.iconFlag})
+                                                        }
+                                                    }
                                             >
-                                                <Text style={styles.price}>{`NT$ ${l.Price}`}</Text>
+                                                
+                                                <Text style={styles.price}>
+                                                    {this.state.iconFlag ? '確認購買' : `NT$ ${l.Price}`}
+                                                    
+                                                </Text>
                                                 {/* <Icon
                                                     name={'plus'}
                                                     size={20}

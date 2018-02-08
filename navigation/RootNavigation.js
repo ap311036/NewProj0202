@@ -38,7 +38,7 @@ const TabsNavigator = TabNavigator({
             fontSize: 12
         }
     },
-    // animationEnabled: true, 
+    animationEnabled: true, 
 })
 
 
