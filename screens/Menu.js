@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity, Image, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { List, ListItem, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import BuyText from '../components/BuyText'
 import * as firebase from 'firebase';
 const backgroundColor = '#D4D47D';
-
-
-
 
 export default class Menu extends Component {
     static navigationOptions = ({ navigation }) => ({
@@ -25,13 +23,13 @@ export default class Menu extends Component {
             baseList: [],
             isLoading: true,
             refreshing: false,
-            iconFlag: false,
+            reset: false,
         }
+        // this.fuckfuckChildFunc = null;
     }
     componentDidMount() {
         console.log('componentDidMount');
         this.FirebaseInit();
-        
     }
 
 
@@ -56,7 +54,14 @@ export default class Menu extends Component {
         this.setState({ refreshing: true });
         this.FirebaseInit();
     }
-
+    _onCheck(EnName){
+        this.props.navigation ? this.props.navigation.navigate('ItemScreen', { name: EnName }) : this.props.nav.navigate('ItemScreen', { name: EnName })
+        // this.props.navigation.navigate('ItemScreen', EnName)
+        this.setState({ reset: true });
+    }
+    _onClickListHandle(){
+        this.setState({reset: true});
+    }
     render() {
         if (this.state.isLoading == true) {
             content = (
@@ -94,26 +99,13 @@ export default class Menu extends Component {
                                     }
                                     rightIcon={
                                         <View style={{flexDirection: 'row',justifyContent: 'center'}}>
-                                            <TouchableOpacity
-                                                onPress={
-                                                    () => {this.props.navigation ? this.props.navigation.navigate('Main') : this.props.nav.navigate('Main')
-                                                        this.setState({iconFlag: !this.state.iconFlag})
-                                                        }
-                                                    }
-                                            >
-                                                
-                                                <Text style={styles.price}>
-                                                    {this.state.iconFlag ? '確認購買' : `NT$ ${l.Price}`}
-                                                    
-                                                </Text>
-                                                {/* <Icon
-                                                    name={'plus'}
-                                                    size={20}
-                                                    onPress={() => console.log('Pressed !')}
-                                                /> */}
-                                            </TouchableOpacity>
+                                            <BuyText Price={l.Price}
+                                                onCheck={this._onCheck.bind(this,l.EnName)}
+                                                resetStauts={this.state.reset}
+                                            />
                                         </View>
                                     }
+                                    onPress={this._onClickListHandle.bind(this)}
                                 />
                             ))
                         }
@@ -145,15 +137,5 @@ const styles = StyleSheet.create({
     },
     ratingText: {
         color: '#828795',
-    },
-    price: {
-        color: '#828795',
-        alignSelf: 'center',
-        borderRadius: 3,
-        borderColor: '#4F9BC4',
-        color: '#4F9BC4',
-        borderWidth: 1,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
     }
 });

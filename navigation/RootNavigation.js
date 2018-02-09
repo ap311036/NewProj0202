@@ -5,10 +5,23 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import LoginScreen from '../screens/LoginScreen';
 import Main from '../screens/Main';
 import Menu from '../screens/Menu';
+import ItemScreen from '../screens/ItemScreen';
+
+const StuffStack = StackNavigator({
+    Menu: { screen: Menu},
+    ItemScreen: { screen: ItemScreen,
+        // navigationOptions: {
+        //     title: ({ state }) => `${state.params.name}`,
+        // }
+    }
+})
+const MainStack = StackNavigator({
+    Main: { screen: Main },
+})
 
 const TabsNavigator = TabNavigator({
-    Main: {
-        screen: Main,
+    MainStack: {
+        screen: MainStack,
         navigationOptions: {
             tabBarIcon: ({ focused, tintColor }) =>
                 (
@@ -18,8 +31,8 @@ const TabsNavigator = TabNavigator({
                 ),
         }
     },
-    Menu: {
-        screen: Menu,
+    StuffStack: {
+        screen: StuffStack,
         navigationOptions: {
             tabBarIcon: ({ focused, tintColor }) =>
                 (
@@ -28,7 +41,7 @@ const TabsNavigator = TabNavigator({
                         : <Icon name="ios-home-outline" size={30} color={tintColor} />
                 ),
         }
-    },
+    }
 },{
     tabBarOptions: {
         activeTintColor: 'black',
@@ -51,16 +64,14 @@ const RootStackNavigator = StackNavigator(
             screen: TabsNavigator,
             navigationOptions: {
                 gesturesEnabled: false,
+                header: null
             }
         }
     },
     {
-        navigationOptions: () => ({
-            headerTitleStyle: {
-                fontWeight: 'normal',
-            },
-        }),
-    }
+        navigationOptions:{
+        },
+    },
 );
 
 export default class RootNavigator extends Component {
@@ -70,3 +81,12 @@ export default class RootNavigator extends Component {
         );
     }
 }
+
+// ,
+// {
+//     navigationOptions: () => ({
+//         headerTitleStyle: {
+//             fontWeight: 'normal',
+//         },
+//     }),
+//     }

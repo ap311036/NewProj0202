@@ -123,6 +123,7 @@ export default class LoginScreen2 extends Component {
     }
     //驗證開新帳號
     validateSignupAccount(email, password) {
+        this.setState({ isLoading: true });
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {
             this.setState({ isLoading: false });
@@ -141,7 +142,6 @@ export default class LoginScreen2 extends Component {
             password,
             passwordConfirmation,
         } = this.state;
-        this.setState({ isLoading: true });
         // Simulate an API call
         LayoutAnimation.easeInEaseOut();
         this.setState({
@@ -207,7 +207,7 @@ export default class LoginScreen2 extends Component {
                                 <View style={styles.formContainer}>
                                     <Text style={{color: 'red'}}>{this.state.error}</Text>
                                     <Input
-                                        icon={
+                                        leftIcon={
                                             <Icon
                                                 name='envelope-o'
                                                 color='rgba(0, 0, 0, 0.38)'
@@ -232,7 +232,7 @@ export default class LoginScreen2 extends Component {
                                         errorMessage='Please enter a valid email address'
                                     />
                                     <Input
-                                        icon={
+                                        leftIcon={
                                             <SimpleIcon
                                                 name='lock'
                                                 color='rgba(0, 0, 0, 0.38)'
@@ -258,7 +258,7 @@ export default class LoginScreen2 extends Component {
                                     />
                                     {isSignUpPage &&
                                         <Input
-                                            icon={
+                                            leftIcon={
                                                 <SimpleIcon
                                                     name='lock'
                                                     color='rgba(0, 0, 0, 0.38)'

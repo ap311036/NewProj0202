@@ -86,8 +86,7 @@ export default class Main extends Component {
                     <TouchableOpacity
                         key={i}
                         activeOpacity={1}
-                        onPressIn={() => clearTimeout(myvar) }
-                        onPressOut={() => myvar = setTimeout(this.autoAni, 2000) }
+
                     >
                         <Image
                             source={ImgArry[i]}
