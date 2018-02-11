@@ -86,7 +86,8 @@ export default class Main extends Component {
                     <TouchableOpacity
                         key={i}
                         activeOpacity={1}
-
+                        onPressIn={() => clearTimeout(myvar) }
+                        onPressOut={() => myvar = setTimeout(this.autoAni, 2000) }
                     >
                         <Image
                             source={ImgArry[i]}
@@ -120,7 +121,10 @@ export default class Main extends Component {
         return (
             <View style={styles.container}>
                     {this._renderHorizontalScrollView()}
-                    <Menu nav={this.props.navigation}></Menu>
+                    {/* <Menu nav={this.props.navigation}></Menu> */}
+                    <Text
+                        onPress={()=> this.props.navigation.navigate('Menu')}
+                    >GO to Menu</Text>
             </View>
         )
     }

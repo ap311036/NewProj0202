@@ -24,6 +24,7 @@ export default class Menu extends Component {
             isLoading: true,
             refreshing: false,
             reset: false,
+            newState: {null: null},
         }
         // this.fuckfuckChildFunc = null;
     }
@@ -54,13 +55,21 @@ export default class Menu extends Component {
         this.setState({ refreshing: true });
         this.FirebaseInit();
     }
-    _onCheck(EnName){
-        this.props.navigation ? this.props.navigation.navigate('ItemScreen', { name: EnName }) : this.props.nav.navigate('ItemScreen', { name: EnName })
-        // this.props.navigation.navigate('ItemScreen', EnName)
-        this.setState({ reset: true });
-    }
+    // _onCheck(EnName){
+    //     this.props.navigation ? this.props.navigation.navigate('ItemScreen', { name: EnName }) : this.props.nav.navigate('ItemScreen', { name: EnName })
+    //     // this.props.navigation.navigate('ItemScreen', EnName)
+    // }
     _onClickListHandle(){
-        this.setState({reset: true});
+        this.setState({newState: {null:null}})
+    }
+    _setState(arg,objSelect){
+        if(JSON.stringify(this.state.newState)==JSON.stringify(arg)){
+            //點選到確認購買時
+            this.props.navigation ? this.props.navigation.navigate('ItemScreen', objSelect ) : this.props.nav.navigate('ItemScreen', objSelect );
+            this._onClickListHandle();
+        }else{
+            this.setState({newState: arg})
+        }
     }
     render() {
         if (this.state.isLoading == true) {
@@ -99,10 +108,20 @@ export default class Menu extends Component {
                                     }
                                     rightIcon={
                                         <View style={{flexDirection: 'row',justifyContent: 'center'}}>
-                                            <BuyText Price={l.Price}
-                                                onCheck={this._onCheck.bind(this,l.EnName)}
-                                                resetStauts={this.state.reset}
-                                            />
+                                            {/* <BuyText Price={l.Price}
+                                                onCheck={this._onCheck.bind(this,l.ChName)}
+                                            /> */}
+                                            <TouchableOpacity
+                                                onPress={
+                                                    ()=> this._setState({ [i]: Object.keys(this.state.newState) && [i] }, l)
+                                                }
+                                            >
+                                                <Text style={ Object.keys(this.state.newState)== i ? styles.activePrice : styles.price }>
+                                                    {
+                                                        Object.keys(this.state.newState)== i ? '確認購買' : `NT$ ${l.Price}`
+                                                    }
+                                                </Text>
+                                            </TouchableOpacity>
                                         </View>
                                     }
                                     onPress={this._onClickListHandle.bind(this)}
@@ -110,6 +129,7 @@ export default class Menu extends Component {
                             ))
                         }
                     </List>
+                    <Text>{JSON.stringify(Object.keys(this.state.newState))}</Text>
                 </ScrollView>
             )
         }
@@ -137,5 +157,23 @@ const styles = StyleSheet.create({
     },
     ratingText: {
         color: '#828795',
+    },
+    price: {
+        color: '#4F9BC4',
+        alignSelf: 'center',
+        borderRadius: 3,
+        borderColor: '#4F9BC4',
+        borderWidth: 1,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+    },
+    activePrice: {
+        color: '#79D29B',
+        alignSelf: 'center',
+        borderRadius: 3,
+        borderColor: '#79D29B',
+        borderWidth: 1,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
     }
 });

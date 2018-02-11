@@ -14,6 +14,8 @@ const StuffStack = StackNavigator({
         //     title: ({ state }) => `${state.params.name}`,
         // }
     }
+},{
+    animationEnabled: true, 
 })
 const MainStack = StackNavigator({
     Main: { screen: Main },
@@ -37,8 +39,8 @@ const TabsNavigator = TabNavigator({
             tabBarIcon: ({ focused, tintColor }) =>
                 (
                     focused
-                        ? <Icon name="ios-home" size={30} color={tintColor} />
-                        : <Icon name="ios-home-outline" size={30} color={tintColor} />
+                        ? <Icon name="ios-menu" size={30} color={tintColor} />
+                        : <Icon name="ios-menu-outline" size={30} color={tintColor} />
                 ),
         }
     }

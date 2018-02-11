@@ -207,7 +207,7 @@ export default class LoginScreen2 extends Component {
                                 <View style={styles.formContainer}>
                                     <Text style={{color: 'red'}}>{this.state.error}</Text>
                                     <Input
-                                        leftIcon={
+                                        icon={
                                             <Icon
                                                 name='envelope-o'
                                                 color='rgba(0, 0, 0, 0.38)'
@@ -232,7 +232,7 @@ export default class LoginScreen2 extends Component {
                                         errorMessage='Please enter a valid email address'
                                     />
                                     <Input
-                                        leftIcon={
+                                        icon={
                                             <SimpleIcon
                                                 name='lock'
                                                 color='rgba(0, 0, 0, 0.38)'
@@ -258,7 +258,7 @@ export default class LoginScreen2 extends Component {
                                     />
                                     {isSignUpPage &&
                                         <Input
-                                            leftIcon={
+                                            icon={
                                                 <SimpleIcon
                                                     name='lock'
                                                     color='rgba(0, 0, 0, 0.38)'
